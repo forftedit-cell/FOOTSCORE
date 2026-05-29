@@ -740,6 +740,14 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ============================================================
 
 def main():
+    if not BOT_TOKEN:
+        logger.error("BOT_TOKEN topilmadi! Railway Variables ni tekshiring.")
+        return
+    if not FOOTBALL_API_KEY:
+        logger.error("FOOTBALL_API_KEY topilmadi! Railway Variables ni tekshiring.")
+        return
+    logger.info(f"Bot token: {BOT_TOKEN[:10]}...")
+    logger.info("Bot ishga tushmoqda...")
     app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("menu", menu_command))
