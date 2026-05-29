@@ -19,7 +19,7 @@ ADMIN_ID = 6364081843
 HEADERS = {"x-apisports-key": FOOTBALL_API_KEY}
 
 TOP_LEAGUES = {
-    39: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League",
+    39: "🏴 Premier League",
     140: "🇪🇸 La Liga",
     135: "🇮🇹 Serie A",
     78: "🇩🇪 Bundesliga",
