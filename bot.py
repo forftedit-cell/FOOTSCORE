@@ -34,7 +34,7 @@ except:
 
 async def download_youtube(query: str, audio_only: bool = True) -> dict:
     ydl_opts = {
-        'format': 'bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio/best',
+        'format': 'best[filesize<50M]/best',
         'quiet': True,
         'no_warnings': True,
         'extract_flat': False,
@@ -282,7 +282,7 @@ async def btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def _download_yt_sync(video_id: str) -> dict:
     url = f"https://www.youtube.com/watch?v={video_id}"
     ydl_opts = {
-        'format': 'bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio/best',
+        'format': 'best[filesize<50M]/best',
         'quiet': True,
         'no_warnings': True,
         'outtmpl': '/tmp/%(title)s.%(ext)s',
