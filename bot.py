@@ -32,11 +32,18 @@ TOP_LEAGUES = {
 }
 
 async def api_get(endpoint, params):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(
-            f"{API_BASE}/{endpoint}", headers=HEADERS, params=params
-        ) as resp:
-            return await resp.json()
+    url = f"{API_BASE}/{endpoint}"
+    logger.info(f"API request: {url} params={params}")
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=HEADERS, params=params, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+                logger.info(f"API response status: {resp.status}")
+                data = await resp.json()
+                logger.info(f"API response keys: {list(data.keys()) if isinstance(data, dict) else 'not dict'}")
+                return data
+    except Exception as e:
+        logger.error(f"API error: {e}")
+        return {}
 
 async def get_fixtures(date_str):
     data = await api_get("fixtures", {"date": date_str, "season": SEASON})
