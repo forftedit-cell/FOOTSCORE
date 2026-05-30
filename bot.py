@@ -34,7 +34,7 @@ except:
 
 async def download_youtube(query: str, audio_only: bool = True) -> dict:
     ydl_opts = {
-        'format': 'best[filesize<50M]/best',
+        'format': 'worstvideo+worstaudio/worst/best',
         'quiet': True,
         'no_warnings': True,
         'extract_flat': False,
@@ -282,10 +282,12 @@ async def btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def _download_yt_sync(video_id: str) -> dict:
     url = f"https://www.youtube.com/watch?v={video_id}"
     ydl_opts = {
-        'format': 'best[filesize<50M]/best',
+        'format': 'bestaudio/best',
         'quiet': True,
         'no_warnings': True,
-        'outtmpl': '/tmp/%(title)s.%(ext)s',
+        'outtmpl': '/tmp/%(id)s.%(ext)s',
+        'extractor_args': {'youtube': {'skip': ['dash', 'hls']}},
+        'socket_timeout': 30,
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -293,6 +295,7 @@ def _download_yt_sync(video_id: str) -> dict:
             filename = ydl.prepare_filename(info)
             return {'success': True, 'filename': filename, 'title': info.get('title'), 'duration': info.get('duration', 0)}
     except Exception as e:
+        logger.error(f"Download error: {e}")
         return {'success': False, 'error': str(e)}
 
 async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
