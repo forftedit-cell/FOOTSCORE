@@ -16,7 +16,7 @@ FOOTBALL_API_KEY = os.getenv("FOOTBALL_API_KEY")
 API_BASE = "https://v3.football.api-sports.io"
 ADMIN_ID = 6364081843
 HEADERS = {"x-apisports-key": FOOTBALL_API_KEY}
-SEASON = 2024
+SEASON = 2025
 WC_LEAGUE_ID = 1
 WC_SEASON = 2026
 
