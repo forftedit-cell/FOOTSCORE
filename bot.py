@@ -40,6 +40,9 @@ async def api_get(endpoint, params):
                 logger.info(f"API response status: {resp.status}")
                 data = await resp.json()
                 logger.info(f"API response keys: {list(data.keys()) if isinstance(data, dict) else 'not dict'}")
+                logger.info(f"Results count: {data.get('results', 0)}")
+                logger.info(f"Errors: {data.get('errors', {})}")
+                logger.info(f"Response items: {len(data.get('response', []))}")
                 return data
     except Exception as e:
         logger.error(f"API error: {e}")
