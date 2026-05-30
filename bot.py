@@ -34,16 +34,11 @@ except:
 
 async def download_youtube(query: str, audio_only: bool = True) -> dict:
     ydl_opts = {
-        'format': 'bestaudio/best' if audio_only else 'best[height<=720]',
+        'format': 'bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio/best',
         'quiet': True,
         'no_warnings': True,
         'extract_flat': False,
         'default_search': 'ytsearch1',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }] if audio_only else [],
         'outtmpl': '/tmp/%(title)s.%(ext)s',
     }
     try:
@@ -287,20 +282,15 @@ async def btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def _download_yt_sync(video_id: str) -> dict:
     url = f"https://www.youtube.com/watch?v={video_id}"
     ydl_opts = {
-        'format': 'bestaudio/best',
+        'format': 'bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio/best',
         'quiet': True,
         'no_warnings': True,
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
         'outtmpl': '/tmp/%(title)s.%(ext)s',
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
-            filename = ydl.prepare_filename(info).rsplit('.', 1)[0] + '.mp3'
+            filename = ydl.prepare_filename(info)
             return {'success': True, 'filename': filename, 'title': info.get('title'), 'duration': info.get('duration', 0)}
     except Exception as e:
         return {'success': False, 'error': str(e)}
